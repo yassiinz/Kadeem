@@ -1,5 +1,6 @@
 package tn.esprit.examen.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,9 +18,10 @@ import java.util.List;
 public class Etudiant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idEtudiant;
+    private Long idEtudiant;
     private String prenomE;
     private String nomE;
+    @Enumerated(EnumType.STRING)
     private Option etudiantOption;
 
     @OneToOne
@@ -27,6 +29,7 @@ public class Etudiant implements Serializable {
     @ManyToOne
     private Departement departements;
     @ManyToMany
+    @JsonIgnore
     private List<Equipe> equipes;
 
     public Long getIdEtudiant() {

@@ -21,8 +21,8 @@ public class ExamenService implements IExamenService{
     public Etudiant addEtudiant(Etudiant e) {
         return etudiantRepository.save(e);
     }
-    @Scheduled(fixedDelay = 60000)
-    void scheduler() {
-        log.info("test");
-    }
+//    @Scheduled(fixedDelay = 60000)
+//    void scheduler() {
+//        log.info("test");
+//    }
 }

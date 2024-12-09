@@ -3,12 +3,13 @@ package tn.esprit.examen.services;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import tn.esprit.examen.entities.Departement;
-import tn.esprit.examen.entities.Etudiant;
-import tn.esprit.examen.entities.Option;
+import tn.esprit.examen.entities.*;
+import tn.esprit.examen.repositories.ContratRepository;
 import tn.esprit.examen.repositories.DepartementRepository;
+import tn.esprit.examen.repositories.EquipeRepository;
 import tn.esprit.examen.repositories.EtudiantRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,6 +18,8 @@ import java.util.List;
 public class EtudiantServicImpl implements IEtudiantService {
     EtudiantRepository etudiantRepository;
     DepartementRepository departementRepository;
+    EquipeRepository equipeRepository;
+    ContratRepository contratRepository;
     @Override
     public List<Etudiant> retrieveAllEtudiants(){
         return etudiantRepository.findAll();
@@ -29,11 +32,10 @@ public class EtudiantServicImpl implements IEtudiantService {
     }
     @Override
     public Etudiant addAndAssignEtudiant (Etudiant e, Option o, Departement d){
-        Etudiant etudiant = etudiantRepository.save(e);
-        etudiant.setEtudiantOption(o);
+        e.setEtudiantOption(o);
         Departement departement = departementRepository.save(d);
-        etudiant.setDepartements(departement);
-        return e;
+        e.setDepartements(departement);
+        return etudiantRepository.save(e);
     }
     public Etudiant updateEtudiant (Etudiant e){
         return etudiantRepository.save(e);
@@ -45,4 +47,31 @@ public class EtudiantServicImpl implements IEtudiantService {
          etudiantRepository.deleteById(idEtudiant);
     }
 
+    public void assignEtudiantToEquipe(Integer idEtudiant, Integer idEquipe){
+        Etudiant etudiant = etudiantRepository.findById(idEtudiant).get();
+        Equipe equipe = equipeRepository.findById(idEquipe).get();
+        List<Equipe> equipeMiseAJour = new ArrayList<>();
+        if (etudiant.getEquipes() != null){
+            equipeMiseAJour = etudiant.getEquipes();
+        }
+        equipeMiseAJour.add(equipe);
+        etudiant.setEquipes(equipeMiseAJour);
+        etudiantRepository.save(etudiant);
+    }
+    public void assignEtudiantDepartement(Integer etudiantId, Integer departementId){
+        Etudiant etudiant = etudiantRepository.findById(etudiantId).get();
+        Departement departement = departementRepository.findById(departementId).get();
+        etudiant.setDepartements(departement);
+        etudiantRepository.save(etudiant);
+    }
+    public void assignEtudiantToContrat(Integer idEtudiant, Integer idContrat){
+        Etudiant etudiant = etudiantRepository.findById(idEtudiant).get();
+        Contrat contrat = contratRepository.findById(idContrat).get();
+        etudiant.setContrat(contrat);
+        etudiantRepository.save(etudiant);
+    }
+
+    public List<Etudiant> getEtudiantsByDepartement (Integer idDepartement){
+        return etudiantRepository.getEtudiantByDepartements_IdDepart(idDepartement);
+    }
 }

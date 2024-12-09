@@ -13,4 +13,9 @@ public interface IEtudiantService {
      Etudiant updateEtudiant (Etudiant e);
     Etudiant retrieveEtudiant(Integer idEtudiant);
     void removeEtudiant(Integer idEtudiant);
+
+    void assignEtudiantToEquipe(Integer idEtudiant, Integer idEquipe);
+    void assignEtudiantDepartement(Integer etudiantId, Integer departementId) ;
+    void assignEtudiantToContrat(Integer idEtudiant, Integer idContrat);
+    List<Etudiant> getEtudiantsByDepartement (Integer idDepartement);
 }

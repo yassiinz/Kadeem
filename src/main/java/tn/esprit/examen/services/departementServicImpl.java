@@ -25,4 +25,5 @@ public class departementServicImpl implements IDepartementService{
     public Departement retrieveDepartement (Integer idDepart){
         return departementRepository.findById(idDepart).get();
     }
+
 }

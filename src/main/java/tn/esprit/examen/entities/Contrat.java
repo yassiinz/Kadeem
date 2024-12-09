@@ -18,11 +18,14 @@ public class Contrat implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idContrat;
+    @Temporal(TemporalType.DATE)
     private Date dateDebutContrat;
+    @Temporal(TemporalType.DATE)
     private Date dateFinContrat;
+    @Enumerated(EnumType.STRING)
     private Specialite specialite;
     private Boolean archive;
 
-    @OneToOne(mappedBy = "contrat")
+    @OneToOne(mappedBy = "contrat",cascade =  CascadeType.ALL)
     private Etudiant etudiant;
 }
